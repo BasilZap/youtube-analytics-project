@@ -18,9 +18,57 @@ class Channel:
         self.title = self.__channel_data["items"][0]["snippet"]["title"]
         self.description = self.__channel_data["items"][0]["snippet"]["description"]
         self.url = f'https://www.youtube.com/channel/{self.__channel_id}'
-        self.subscriber_count = self.__channel_data["items"][0]["statistics"]["subscriberCount"]
+        self.subscriber_count = int(self.__channel_data["items"][0]["statistics"]["subscriberCount"])
         self.video_count = self.__channel_data["items"][0]["statistics"]["videoCount"]
         self.view_count = self.__channel_data["items"][0]["statistics"]["viewCount"]
+
+    def __str__(self):
+        """
+        Вывод информации о канале
+        """
+        return f"'{self.title} ({self.url})'"
+
+    def __add__(self, other):
+        """
+        Операция сложения каналов
+        """
+        return self.subscriber_count + other.subscriber_count
+
+    def __sub__(self, other):
+        """
+        Операция вычитания каналов
+        """
+        return self.subscriber_count - other.subscriber_count
+
+    def __lt__(self, other):
+        """
+        Операция сравнения каналов <
+        """
+        return self.subscriber_count < other.subscriber_count
+
+    def __le__(self, other):
+        """
+        Операция сравнения каналов <=
+        """
+        return self.subscriber_count <= other.subscriber_count
+
+    def __gt__(self, other):
+        """
+        Операция сравнения каналов >
+        """
+        return self.subscriber_count > other.subscriber_count
+
+    def __ge__(self, other):
+        """
+        Операция сравнения каналов >=
+        """
+        return self.subscriber_count >= other.subscriber_count
+
+    def __eq__(self, other):
+        """
+        Операция сравнения каналов ==
+        """
+        return self.subscriber_count == other.subscriber_count
 
     @classmethod
     def get_service(cls):
@@ -41,13 +89,15 @@ class Channel:
         json_path = '../src/' + json_file_name      # Формируем путь к файлу
 
         # Формируем строку для записи
-        json_str = f'[{{"channel_id": {self.__channel_id}, ' \
-                   f'"title": {self.title}, ' \
-                   f'"description": {self.description}, ' \
-                   f'"url": {self.url}, ' \
-                   f'"subscriber_count": {self.subscriber_count}, ' \
-                   f'"video_count": {self.video_count}, ' \
-                   f'"view_count": {self.view_count}"}}]'
+        json_str = {
+                   "channel_id": {self.__channel_id},
+                   "title": {self.title},
+                   "description": {self.description},
+                   "url": {self.url},
+                   "subscriber_count": {str(self.subscriber_count)},
+                   "video_count": {self.video_count},
+                   "view_count": self.view_count
+                   }
 
         with open(json_path, "w", encoding="utf-8") as json_file:
             json.dump(json_str, json_file, ensure_ascii=False, indent=4)
