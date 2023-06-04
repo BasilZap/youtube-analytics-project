@@ -41,13 +41,15 @@ class Channel:
         json_path = '../src/' + json_file_name      # Формируем путь к файлу
 
         # Формируем строку для записи
-        json_str = f'[{{"channel_id": {self.__channel_id}, ' \
-                   f'"title": {self.title}, ' \
-                   f'"description": {self.description}, ' \
-                   f'"url": {self.url}, ' \
-                   f'"subscriber_count": {self.subscriber_count}, ' \
-                   f'"video_count": {self.video_count}, ' \
-                   f'"view_count": {self.view_count}"}}]'
+        json_str = {
+                   "channel_id": self.__channel_id,
+                   "title": self.title,
+                   "description": self.description,
+                   "url": self.url,
+                   "subscriber_count": self.subscriber_count,
+                   "video_count": self.video_count,
+                   "view_count": self.view_count
+                   }
 
         with open(json_path, "w", encoding="utf-8") as json_file:
             json.dump(json_str, json_file, ensure_ascii=False, indent=4)
