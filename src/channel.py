@@ -90,12 +90,12 @@ class Channel:
 
         # Формируем строку для записи
         json_str = {
-                   "channel_id": {self.__channel_id},
-                   "title": {self.title},
-                   "description": {self.description},
-                   "url": {self.url},
-                   "subscriber_count": {str(self.subscriber_count)},
-                   "video_count": {self.video_count},
+                   "channel_id": self.__channel_id,
+                   "title": self.title,
+                   "description": self.description,
+                   "url": self.url,
+                   "subscriber_count": str(self.subscriber_count),
+                   "video_count": self.video_count,
                    "view_count": self.view_count
                    }
 
