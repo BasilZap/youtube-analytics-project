@@ -8,20 +8,31 @@ class Video:
         """
         Инициализация атрибутов класса + дополнительный
         защищенный атрибут video_data в котором все данные
+        **Если введено неверное ID видео, обрабатываем ошибку
+        IndexError, все поля кроме video_id выставляем в None
         """
         self.video_id = video_id
-        self.__video_data = src.channel.youtube.videos().list(part='snippet,statistics,contentDetails,topicDetails',
+        try:
+            self.__video_data = src.channel.youtube.videos().list(part='snippet,statistics,contentDetails,topicDetails',
                                                               id=video_id).execute()
-        self.video_name = self.__video_data["items"][0]["snippet"]["title"]
-        self.video_link = f'https://www.youtube.com/watch?v={video_id}'
-        self.view_count = self.__video_data["items"][0]["statistics"]["viewCount"]
-        self.like_count = self.__video_data["items"][0]["statistics"]["likeCount"]
+            self.title = self.__video_data["items"][0]["snippet"]["title"]
+            self.video_link = f'https://www.youtube.com/watch?v={video_id}'
+            self.view_count = self.__video_data["items"][0]["statistics"]["viewCount"]
+            self.like_count = self.__video_data["items"][0]["statistics"]["likeCount"]
 
-    def __str__(self):
+        except IndexError:
+            self.__video_data = None
+            self.title = None
+            self.video_link = None
+            self.view_count = None
+            self.like_count = None
+
+
+def __str__(self):
         """
         Метод str - вывод информации о видео
         """
-        return f'{self.video_name}'
+        return f'{self.title}'
 
 
 # Объявляем дочерний от Video класс PLVideo
